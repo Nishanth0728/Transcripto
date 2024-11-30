@@ -8,9 +8,36 @@
 <body>
     <h1>Get YouTube Video Transcript</h1>
     <form action="/get_transcript" method="post">
-        <label for="video_id">Enter YouTube Video ID:</label>
-        <input type="text" id="video_id" name="video_id" required>
-        <button type="submit">Get Transcript</button>
+        <label for="video_url">Enter YouTube Video URL:</label>
+        <input type="text" id="video_url" name="video_url" required>
+
+        <label for="language">Select Language:</label>
+        <select id="language" name="language">
+            <option value="en">English</option>
+            <option value="te">Telugu</option>
+            <option value="hi">Hindi</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+        </select>
+
+        <button type="submit">Get Translated Transcript</button>
+    </form>
+
+    <h1>Or Upload a Video</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="video_file">Upload Video File:</label>
+        <input type="file" id="video_file" name="video_file" required>
+
+        <label for="language">Select Language:</label>
+        <select id="language" name="language">
+            <option value="en">English</option>
+            <option value="te">Telugu</option>
+            <option value="hi">Hindi</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+        </select>
+
+        <button type="submit">Upload and Transcribe</button>
     </form>
 </body>
 </html>
