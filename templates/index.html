@@ -1,43 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Transcript Downloader</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f9;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    p {
+      margin-bottom: 30px;
+      color: #666;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .btn {
+      background-color: #2249ca;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #55bff0;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Get YouTube Video Transcript</h1>
-    <form action="/get_transcript" method="post">
-        <label for="video_url">Enter YouTube Video URL:</label>
-        <input type="text" id="video_url" name="video_url" required>
-
-        <label for="language">Select Language:</label>
-        <select id="language" name="language">
-            <option value="en">English</option>
-            <option value="te">Telugu</option>
-            <option value="hi">Hindi</option>
-            <option value="es">Spanish</option>
-            <option value="fr">French</option>
-        </select>
-
-        <button type="submit">Get Translated Transcript</button>
-    </form>
-
-    <h1>Or Upload a Video</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <label for="video_file">Upload Video File:</label>
-        <input type="file" id="video_file" name="video_file" required>
-
-        <label for="language">Select Language:</label>
-        <select id="language" name="language">
-            <option value="en">English</option>
-            <option value="te">Telugu</option>
-            <option value="hi">Hindi</option>
-            <option value="es">Spanish</option>
-            <option value="fr">French</option>
-        </select>
-
-        <button type="submit">Upload and Transcribe</button>
-    </form>
+  <div class="container">
+    <h1>Welcome to the Transcription App</h1>
+    <p>Select an option below to proceed:</p>
+    <div class="buttons">
+      <a href="/get_transcript_page" class="btn">Transcribe YouTube URL</a>
+      <a href="/upload_page" class="btn">Upload a Video</a>
+    </div>
+  </div>
 </body>
+
 </html>

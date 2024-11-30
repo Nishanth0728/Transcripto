@@ -1,6 +1,6 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template
 from youtube_transcript_api import YouTubeTranscriptApi as yta
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 import re
 import os
 from moviepy import VideoFileClip
@@ -22,6 +22,10 @@ def extract_video_id(url):
 def home():
     return render_template('index.html')
 
+@app.route('/get_transcript_page', methods=['GET'])
+def get_transcript_page():
+    return render_template('get_transcript.html')
+
 @app.route('/get_transcript', methods=['POST'])
 def get_transcript():
     video_url = request.form.get('video_url')
@@ -41,60 +45,60 @@ def get_transcript():
         transcript = " ".join([entry['text'] for entry in data])
 
         # Translate the transcript
-        translator = Translator()
-        translated = translator.translate(transcript, dest=target_language).text
+        translated = GoogleTranslator(source="auto", target=target_language).translate(transcript)
 
-        # Render the translated transcript on the page
+        # Render the transcript page
         return render_template('transcript.html', transcript=translated)
 
     except Exception as e:
         return f"An error occurred: {e}"
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
-    if request.method == 'POST':
-        if 'video_file' not in request.files:
-            return "No file uploaded."
-
-        video_file = request.files['video_file']
-        target_language = request.form.get('language')
-
-        if video_file.filename == '':
-            return "No file selected."
-
-        video_path = os.path.join(app.config['UPLOAD_FOLDER'], video_file.filename)
-        video_file.save(video_path)
-
-        try:
-            # Extract audio from video
-            video = VideoFileClip(video_path)
-            audio_path = video_path.rsplit('.', 1)[0] + ".wav"
-            video.audio.write_audiofile(audio_path)
-
-            # Transcribe audio to text
-            recognizer = sr.Recognizer()
-            with sr.AudioFile(audio_path) as audio_file:
-                audio = recognizer.record(audio_file)
-                transcript = recognizer.recognize_google(audio)
-
-            # Translate transcript
-            translator = Translator()
-            translated = translator.translate(transcript, dest=target_language).text
-
-            # Render the translated transcript
-            return render_template('transcript.html', transcript=translated)
-
-        except Exception as e:
-            return f"An error occurred: {e}"
-
-        finally:
-            # Clean up temporary files
-            if os.path.exists(video_path):
-                os.remove(video_path)
-            if os.path.exists(audio_path):
-                os.remove(audio_path)
-
+@app.route('/upload_page', methods=['GET'])
+def upload_page():
     return render_template('upload.html')
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'video_file' not in request.files:
+        return "No file uploaded."
+
+    video_file = request.files['video_file']
+    target_language = request.form.get('language')
+
+    if video_file.filename == '':
+        return "No file selected."
+
+    video_path = os.path.join(app.config['UPLOAD_FOLDER'], video_file.filename)
+    video_file.save(video_path)
+
+    try:
+        # Extract audio from video
+        video = VideoFileClip(video_path)
+        audio_path = video_path.rsplit('.', 1)[0] + ".wav"
+        video.audio.write_audiofile(audio_path)
+        video.close()  # Ensure the video file is released
+
+        # Transcribe audio to text
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(audio_path) as audio_file:
+            audio = recognizer.record(audio_file)
+            transcript = recognizer.recognize_google(audio)
+
+        # Translate the transcript
+        translated = GoogleTranslator(source="auto", target=target_language).translate(transcript)
+
+        # Render the transcript page
+        return render_template('transcript.html', transcript=translated)
+
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+    finally:
+        # Clean up temporary files
+        if os.path.exists(video_path):
+            os.remove(video_path)
+        if os.path.exists(audio_path):
+            os.remove(audio_path)
 
 if __name__ == '__main__':
     app.run(debug=True)

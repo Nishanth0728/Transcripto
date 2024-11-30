@@ -1,13 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transcript</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transcript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #eef2f3;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .transcript {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      text-align: left;
+      margin-top: 20px;
+      font-size: 16px;
+      color: #333;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Video Transcript</h1>
-    <p>{{ transcript }}</p>
-    <a href="/">Back</a>
+  <div class="container">
+    <h1>Transcript</h1>
+    <div class="transcript">
+      {{ transcript }}
+    </div>
+  </div>
 </body>
+
 </html>
